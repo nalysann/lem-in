@@ -1,0 +1,21 @@
+# object files, dependency files, libraries, binaries
+obj/
+*.o
+*.d
+*.a
+*.so
+*.dylib
+*.out
+lem-in
+
+# CLion
+.idea/
+cmake-build-debug/
+CMakeLists.txt
+
+# macOS
+.DS_Store
+
+# valgrind
+*.dSYM/
+*.out.*
