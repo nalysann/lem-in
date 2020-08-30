@@ -11,11 +11,9 @@ lem-in
 # CLion
 .idea/
 cmake-build-debug/
-CMakeLists.txt
 
 # macOS
 .DS_Store
 
 # valgrind
 *.dSYM/
-*.out.*
