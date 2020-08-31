@@ -14,7 +14,12 @@ LEM_IN = lem-in
 
 SRC_DIR = src
 
-SRC = lem_in.c
+SRC = lem_in.c \
+      parse.c \
+      parse_ants.c \
+      parse_links.c \
+      parse_rooms.c \
+      utils.c
 
 INC_DIR = inc \
           $(LIB_DIR)/inc
@@ -49,7 +54,7 @@ YELLOW = "\033[0;33m"
 BLUE = "\033[0;34m"
 MAGENTA = "\033[0;35m"
 CYAN = "\033[0;36m"
-GREY = "\033[0;37m"
+WHITE = "\033[0;37m"
 
 .PHONY: all clean fclean re
 
@@ -68,7 +73,7 @@ $(OBJ_DIR):
 	@mkdir -p $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	@echo -en $(GREY)
+	@echo -en $(WHITE)
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo -en $(RESET)
 
@@ -84,9 +89,9 @@ clean:
 	@echo -en $(RESET)
 
 fclean: clean
-	@echo -e $(CYAN)\>\>\> Removing $(LIB_DIR) \<\<\<$(RESET)
+	@echo -e $(CYAN)\>\>\> Purging $(LIB_DIR) \<\<\<$(RESET)
 	@$(MAKE) -C $(LIB_DIR) fclean
-	@echo -e $(CYAN)\>\>\> Removing $(LEM_IN) \<\<\<$(RESET)
+	@echo -e $(CYAN)\>\>\> Purging $(LEM_IN) \<\<\<$(RESET)
 	@echo -en $(RED)
 	rm -f $(LEM_IN)
 	@echo -en $(RESET)
