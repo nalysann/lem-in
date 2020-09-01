@@ -34,7 +34,17 @@ LIB_DIR = libft
 
 LIB = libft.a
 
-CC = clang
+UNAME_S = $(shell uname -s)
+
+ifeq ($(UNAME_S), Darwin)
+	CC = clang
+	SHELL = /bin/zsh
+endif
+
+ifeq ($(UNAME_S), Linux)
+	CC = gcc
+	SHELL = /bin/bash
+endif
 
 CFLAGS += -Wall -Wextra -Werror \
           $(addprefix -I , $(INC_DIR)) \
@@ -44,8 +54,6 @@ CFLAGS += -Wall -Wextra -Werror \
 LDFLAGS += -L $(LIB_DIR)
 
 LDLIBS += -lft
-
-SHELL = /bin/zsh
 
 RESET = "\033[0;0m"
 RED = "\033[0;31m"
@@ -73,7 +81,7 @@ $(OBJ_DIR):
 	@mkdir -p $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	@echo -en $(WHITE)
+	@echo -en $(MAGENTA)
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo -en $(RESET)
 
