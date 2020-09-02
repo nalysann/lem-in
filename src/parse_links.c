@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "parse.h"
 #include "room.h"
 #include "utils.h"
 
@@ -18,58 +18,56 @@
 #include "ft_list.h"
 #include "ft_stdio.h"
 #include "ft_string.h"
+#include "ft_vector.h"
 
 #include <stdlib.h>
 #include <unistd.h>
 
-static t_room	*get_room(t_list *rooms, char *name)
+static size_t	get_room(t_vector *rooms, char *name, char direction)
 {
+	size_t	i;
 	t_room	*room;
 
-	while (rooms != NULL)
+	i = (direction == 'f' ? 1 : 0);
+	while (i < rooms->size)
 	{
-		room = (t_room *)rooms->content;
+		room = (t_room *)rooms->data[i];
 		if (ft_strequ(name, room->name))
-			return (room);
-		rooms = rooms->next;
+			return (room->index);
+		i += 2;
 	}
-	return (NULL);
+	return (NO_ROOM);
 }
 
-static void		handle_link(t_list *rooms, char *line)
+static void		handle_link(t_vector *rooms, char *line)
 {
-	t_list	*tmp;
 	char	**words;
-	t_room	*room1;
-	t_room	*room2;
+	size_t	from;
+	size_t	to;
 
 	words = ft_strsplit(line, '-');
 	if (count_words(words) != 2)
 		ft_throw(LINK_MSG, E_INPUT);
-	room1 = get_room(rooms, words[0]);
-	room2 = get_room(rooms, words[1]);
-	if (room1 == NULL || room2 == NULL)
+	from = get_room(rooms, words[0], 'f');
+	to = get_room(rooms, words[1], 't');
+	if (from == NO_ROOM || to == NO_ROOM)
 		ft_throw(LINK_MSG, E_INPUT);
-	tmp = ft_lstnew(room2, sizeof(t_room));
-	if (tmp == NULL)
-		ft_throw(ALLOC_MSG, E_ALLOC);
-	ft_lstadd(&room1->neighbors, tmp);
-	tmp = ft_lstnew(room1, sizeof(t_room));
-	if (tmp == NULL)
-		ft_throw(ALLOC_MSG, E_ALLOC);
-	ft_lstadd(&room2->neighbors, tmp);
+	((t_room *)rooms->data[from])->links.push_back(&((t_room *)rooms->data[from])->links, (void *)to);
+	((t_room *)rooms->data[to])->links.push_back(&((t_room *)rooms->data[to])->links, (void *)from);
 	free(line);
+//	TODO: check name correctness ???
+//	TODO: check loops, repeating links ???
+//	TODO: free split ???
 }
 
-void	parse_links(t_list *rooms, t_list *input, char *line)
+void	parse_links(t_list *input, t_vector *rooms, char *line)
 {
 	while (line != NULL)
 	{
-		// ignore comments and commands ??
+		if (line != NULL)
+			input->push_back(input, line);
 		if (line[0] != '#')
 			handle_link(rooms, line);
 		get_next_line(STDIN_FILENO, &line);
-		if (line != NULL)
-			save_line(&input, line);
 	}
 }

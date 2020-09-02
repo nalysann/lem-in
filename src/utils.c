@@ -21,3 +21,4 @@ size_t	count_words(char **words)
 		++i;
 	return (i);
 }
+

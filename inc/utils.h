@@ -13,6 +13,8 @@
 #ifndef UTILS_H
 # define UTILS_H
 
+#include "ft_list.h"
+
 # include <stddef.h>
 
 # define NULL_MSG		NULL
@@ -29,6 +31,7 @@
 # define E_ALLOC		1
 # define E_INPUT		2
 
+void	print_node(t_list *node);
 size_t	count_words(char **words);
 
 #endif

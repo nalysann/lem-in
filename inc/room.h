@@ -17,8 +17,10 @@
 
 #include <stddef.h>
 
-# define START	"##start"
-# define END	"##end"
+# define C_START	"##start"
+# define C_END		"##end"
+
+# define NO_ROOM	((size_t)-1)
 
 typedef enum	e_room_type
 {
@@ -30,7 +32,7 @@ typedef enum	e_room_type
 typedef struct	s_room
 {
 	char			*name;
-	t_list			*neighbors;
+	t_vector		links;
 	size_t			index;
 	int				x;
 	int				y;

@@ -6,34 +6,42 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/30 19:36:30 by nalysann          #+#    #+#             */
-/*   Updated: 2020/08/30 19:36:31 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/01 13:46:24 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "parse.h"
 #include "utils.h"
 
-#include "ft_error.h"
 #include "ft_list.h"
 #include "ft_stdio.h"
+#include "ft_vector.h"
 
 #include <stddef.h>
 
-void	print_node(t_list *node)
+static void		print_input(t_list *input)
 {
-	ft_printf("%s\n", (char *)node->content);
+	t_node	*node;
+
+	if (input->size == 0)
+		return ;
+	node = input->front;
+	while (node != NULL)
+	{
+		ft_printf("%s\n", node->data);
+		node = node->next;
+	}
 }
 
-int		main(void)
+int				main(void)
 {
-	t_list	*input;
-	t_list	*rooms;
-	size_t	size;
+	t_list		input;
+	t_vector	rooms;
 	size_t	ants;
 
-	input = NULL;
-	rooms = NULL;
-	parse(&input, &rooms, &size, &ants);
-	ft_lstiter(input, print_node);
-//	evaluate(rooms, input, size, ants);
+	list_init(&input);
+	vector_init(&rooms);
+	parse(&input, &rooms, &ants);
+	print_input(&input);
+//	solve(rooms, size, ants);
 }

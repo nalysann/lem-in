@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "parse.h"
 #include "room.h"
 #include "utils.h"
 
@@ -19,88 +19,94 @@
 #include "ft_stdio.h"
 #include "ft_stdlib.h"
 #include "ft_string.h"
+#include "ft_vector.h"
 
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-static bool		is_valid_room(t_list **rooms, char *line)
+static bool		is_room_line(char *line)
 {
-	t_list	*tmp;
-	t_room	*room;
 	char	**words;
 
-	room = (*rooms)->content;
 	words = ft_strsplit(line, ' ');
 	if (count_words(words) != 3)
 	{
-		free(room);
-		tmp = *rooms;
-		*rooms = (*rooms)->next;
-		free(tmp);
 		return (false);
 	}
-	room->x = ft_atoi(words[1]);
-	room->y = ft_atoi(words[2]);
+	if (words[0][0] == 'L')
+		ft_throw(ROOM_MSG, E_INPUT);
 	return (true);
+//	TODO: check name uniqueness
+//	TODO: check room coordinates
+//	TODO: free split
 }
 
-static void		handle_room(t_list **rooms, char *line, size_t index, t_room_type type)
+static void		room_init(t_room *room, char *line, size_t idx, t_room_type type)
 {
-	t_list	*room;
-	t_room	*content;
+	char	**words;
 
-	if (line[0] == 'L')
-		ft_throw(ROOM_MSG, E_INPUT);
-	room = ft_lstnew(NULL, 0);
-	if (room == NULL)
+	words = ft_strsplit(line, ' ');
+	room->name = words[0];
+	vector_init(&room->links);
+	room->x = ft_atoi(words[1]);
+	room->y = ft_atoi(words[2]);
+	room->index = idx;
+	room->type = type;
+//	TODO: free split
+}
+
+static bool		is_valid_room(t_vector *rooms, char *line, size_t idx, t_room_type type)
+{
+	t_room	*room_in;
+	t_room	*room_out;
+
+	room_in = (t_room *)malloc(sizeof(t_room));
+	room_out = (t_room *)malloc(sizeof(t_room));
+	if (room_in == NULL || room_out == NULL)
 		ft_throw(ALLOC_MSG, E_ALLOC);
-	ft_lstadd(rooms, room);
-	room->content = (t_room *)malloc(sizeof(t_room));
-	if (room->content == NULL)
-		ft_throw(ALLOC_MSG, E_ALLOC);
-	content = (t_room *)room->content;
-	content->name = line;
-	content->neighbors = NULL;
-	content->index = index;
-	content->type = type;
+	if (!is_room_line(line))
+		return (false);
+	room_init(room_in, line, 2 * idx, type);
+	room_init(room_out, line, 2 * idx + 1, type);
+	rooms->push_back(rooms, room_in);
+	rooms->push_back(rooms, room_out);
+	return (true);
 }
 
 static void		parse_command(char *line, t_room_type *type)
 {
-	if (ft_strequ(line, START))
+	if (ft_strequ(line, C_START))
 		*type = R_SOURCE;
-	else if (ft_strequ(line, END))
+	else if (ft_strequ(line, C_END))
 		*type = R_SINK;
 }
 
-size_t			parse_rooms(t_list **rooms, t_list *input)
+char			*parse_rooms(t_list *input, t_vector *rooms)
 {
 	char			*line;
-	size_t			index;
+	size_t			idx;
 	t_room_type		type;
 
-	index = 1;
+	idx = 0;
+	type = R_DEFAULT;
 	while (get_next_line(STDIN_FILENO, &line) > 0)
 	{
-		type = R_DEFAULT;
-		save_line(&input, line);
+		input->push_back(input, line);
 		if (line[0] == '#')
 		{
 			if (line[1] == '#')
 				parse_command(line, &type);
-			// else ignore comment
+			continue ;
 		}
-		else
+		if (!is_valid_room(rooms, line, idx, type))
 		{
-			handle_room(rooms, line, (type == R_SOURCE ? 0 : index), type);
-			if (!is_valid_room(rooms, line))
-				break ;
+			input->pop_back(input);
+			break ;
 		}
-		++index;
+		type = R_DEFAULT;
+		++idx;
 	}
-	parse_links(*rooms, input, line);
-//	((t_room *)end_room->content)->index = index + 1;
-	return (index + 2);
+	return (line);
 }

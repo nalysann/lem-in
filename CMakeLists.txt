@@ -23,7 +23,7 @@ add_subdirectory(libft)
 
 add_executable(lem-in
         inc/lem_in.h
-        inc/parser.h
+        inc/parse.h
         inc/path.h
         inc/room.h
         inc/utils.h

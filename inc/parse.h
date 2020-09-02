@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,18 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#ifndef PARSE_H
+# define PARSE_H
 
 # include "ft_list.h"
+# include "ft_vector.h"
 
 # include <stddef.h>
 
-void	parse(t_list **input, t_list **rooms, size_t *size, size_t *ants);
-void	parse_ants(t_list **input, size_t *number_of_ants);
-size_t	parse_rooms(t_list **rooms, t_list *input);
-void	parse_links(t_list *rooms, t_list *input, char *line);
-
-void	save_line(t_list **input, char *line);
+void	parse(t_list *input, t_vector *rooms, size_t *ants);
+void	parse_ants(t_list *input, size_t *number_of_ants);
+char	*parse_rooms(t_list *input, t_vector *rooms);
+void	parse_links(t_list *input, t_vector *rooms, char *line);
 
 #endif
