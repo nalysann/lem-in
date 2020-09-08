@@ -36,6 +36,6 @@ typedef struct	s_dinic
 	int			t;
 }				t_dinic;
 
-int				dinic(t_dinic *info, t_vector *rooms);
+void			dinic(t_dinic *info, t_vector *rooms, int number_of_ants, t_list *paths);
 
 #endif

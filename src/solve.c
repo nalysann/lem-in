@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "path.h"
 #include "room.h"
 #include "solve.h"
 
@@ -90,23 +91,27 @@ static int	dfs(t_dinic *info, t_vector *rooms, int v, int flow)
 	return (0);
 }
 
-int		dinic(t_dinic *info, t_vector *rooms)
+void	dinic(t_dinic *info, t_vector *rooms, int number_of_ants, t_list *paths)
 {
-	int		flow;
-	int		pushed;
+	t_list	*cur_paths;
+	double	best_turns;
+	double	cur_turns;
 
-	flow = 0;
+	best_turns = 0.0;
 	while (1)
 	{
 		if (!bfs(info, rooms))
-		{
-			break;
-		}
+			break ;
 		set_initial_links(info, rooms);
-		while ((pushed = dfs (info, rooms, info->s, INT_MAX)))
+		while (dfs(info, rooms, info->s, INT_MAX))
+			;
+		cur_paths = get_paths(rooms, info);
+		cur_turns = count_turns(cur_paths, number_of_ants);
+		if (paths == NULL || cur_turns < best_turns)
 		{
-			flow += pushed;
+			paths = cur_paths;
+			best_turns = cur_turns;
+//			TODO: free old paths
 		}
 	}
-	return (flow);
 }

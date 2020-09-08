@@ -34,6 +34,6 @@ add_executable(lem-in
         src/parse_links.c
         src/parse_rooms.c
         src/solve.c
-        src/utils.c)
+        src/utils.c src/paths_get.c)
 
 target_link_libraries(lem-in ft)

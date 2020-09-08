@@ -38,13 +38,13 @@ int				main(void)
 	int			number_of_ants;
 	t_vector	rooms;
 	t_dinic		info;
-	t_list		paths;
+	t_list		*paths;
 
 	list_init(&input);
 	vector_init(&rooms);
-	list_init(&paths);
+	paths = NULL;
 	parse(&input, &number_of_ants, &rooms, &info);
 	print_input(&input);
-	ft_printf("%d\n", dinic(&info, &rooms));
+	dinic(&info, &rooms, number_of_ants, paths);
 //	print_answer(map, paths, ants + 1, flow);
 }
