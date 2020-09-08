@@ -20,7 +20,7 @@
 # define C_START	"##start"
 # define C_END		"##end"
 
-# define NO_ROOM	((size_t)-1)
+# define NO_ROOM	(-1)
 
 typedef enum	e_room_type
 {
@@ -31,12 +31,12 @@ typedef enum	e_room_type
 
 typedef struct	s_room
 {
+	t_list			links;
 	char			*name;
-	t_vector		links;
-	size_t			index;
+	int				index;
+	t_room_type		type;
 	int				x;
 	int				y;
-	t_room_type		type;
 }				t_room;
 
 #endif

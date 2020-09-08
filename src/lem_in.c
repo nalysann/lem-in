@@ -11,11 +11,10 @@
 /* ************************************************************************** */
 
 #include "parse.h"
-#include "utils.h"
+#include "solve.h"
 
 #include "ft_list.h"
 #include "ft_stdio.h"
-#include "ft_vector.h"
 
 #include <stddef.h>
 
@@ -36,12 +35,16 @@ static void		print_input(t_list *input)
 int				main(void)
 {
 	t_list		input;
+	int			number_of_ants;
 	t_vector	rooms;
-	size_t	ants;
+	t_dinic		info;
+	t_list		paths;
 
 	list_init(&input);
 	vector_init(&rooms);
-	parse(&input, &rooms, &ants);
+	list_init(&paths);
+	parse(&input, &number_of_ants, &rooms, &info);
 	print_input(&input);
-//	solve(rooms, size, ants);
+	ft_printf("%d\n", dinic(&info, &rooms));
+//	print_answer(map, paths, ants + 1, flow);
 }

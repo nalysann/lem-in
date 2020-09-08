@@ -19,6 +19,7 @@ SRC = lem_in.c \
       parse_ants.c \
       parse_links.c \
       parse_rooms.c \
+      solve.c \
       utils.c
 
 INC_DIR = inc \

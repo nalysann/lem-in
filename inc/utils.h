@@ -13,7 +13,9 @@
 #ifndef UTILS_H
 # define UTILS_H
 
-#include "ft_list.h"
+#include "room.h"
+
+#include "ft_vector.h"
 
 # include <stddef.h>
 
@@ -31,7 +33,8 @@
 # define E_ALLOC		1
 # define E_INPUT		2
 
-void	print_node(t_list *node);
-size_t	count_words(char **words);
+int		count_words(char **words);
+int		get_room_index_by_type(t_vector *rooms, t_room_type type, char half);
+int		get_room_index_by_name(t_vector *rooms, char *name, char half);
 
 #endif

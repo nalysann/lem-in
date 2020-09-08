@@ -26,12 +26,14 @@ add_executable(lem-in
         inc/parse.h
         inc/path.h
         inc/room.h
+        inc/solve.h
         inc/utils.h
         src/lem_in.c
         src/parse.c
         src/parse_ants.c
         src/parse_links.c
         src/parse_rooms.c
+        src/solve.c
         src/utils.c)
 
 target_link_libraries(lem-in ft)

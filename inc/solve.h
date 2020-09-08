@@ -1,28 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.h                                            :+:      :+:    :+:   */
+/*   solve.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/31 12:57:04 by nalysann          #+#    #+#             */
-/*   Updated: 2020/08/31 12:57:05 by nalysann         ###   ########.fr       */
+/*   Created: 2020/09/03 07:47:10 by nalysann          #+#    #+#             */
+/*   Updated: 2020/09/03 07:47:11 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSE_H
-# define PARSE_H
-
-# include "solve.h"
+#ifndef SOLVE_H
+# define SOLVE_H
 
 # include "ft_list.h"
 # include "ft_vector.h"
 
-# include <stddef.h>
+# define NOT_VISITED	(-1)
 
-void	parse(t_list *input, int *number_of_ants, t_vector *rooms, t_dinic *info);
-void	parse_ants(t_list *input, int *number_of_ants);
-char	*parse_rooms(t_list *input, t_vector *rooms);
-void	parse_links(t_list *input, t_vector *rooms, char *line, t_dinic *info);
+typedef struct	s_edge
+{
+	int		from;
+	int		to;
+	int		cap;
+	int		flow;
+}				t_edge;
+
+typedef struct	s_dinic
+{
+	t_vector	edges;
+	int			*d;
+	t_node		**last;
+	int			n;
+	int			s;
+	int			t;
+}				t_dinic;
+
+int				dinic(t_dinic *info, t_vector *rooms);
 
 #endif

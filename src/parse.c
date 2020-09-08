@@ -11,22 +11,33 @@
 /* ************************************************************************** */
 
 #include "parse.h"
+#include "solve.h"
 #include "utils.h"
 
 #include "ft_error.h"
 #include "ft_list.h"
-#include "ft_string.h"
 #include "ft_vector.h"
 
-#include <stddef.h>
+#include <stdlib.h>
 
-#include "ft_stdio.h"
+static void		info_init(t_dinic *info, t_vector *rooms)
+{
+	vector_init(&info->edges);
+	info->n = rooms->size;
+	info->s = get_room_index_by_type(rooms, R_SOURCE, 'o');
+	info->t = get_room_index_by_type(rooms, R_SINK, 'i');
+	info->d = (int *)malloc(info->n * sizeof(int));
+	info->last = (t_node **)malloc(info->n * sizeof(t_node *));
+	if (info->d == NULL || info->last == NULL)
+		ft_throw(ALLOC_MSG, E_ALLOC);
+}
 
-void	parse(t_list *input, t_vector *rooms, size_t *ants)
+void			parse(t_list *input, int *number_of_ants, t_vector *rooms, t_dinic *info)
 {
 	char	*line;
 
-	parse_ants(input, ants);
+	parse_ants(input, number_of_ants);
 	line = parse_rooms(input, rooms);
-	parse_links(input, rooms, line);
+	info_init(info, rooms);
+	parse_links(input, rooms, line, info);
 }
