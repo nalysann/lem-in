@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:39:47 by nalysann          #+#    #+#             */
-/*   Updated: 2020/08/31 11:39:48 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/08 17:43:08 by hbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 # define ANT_MSG		"ERROR: invalid number of ants"
 # define ROOM_MSG		"ERROR: invalid room"
 # define LINK_MSG		"ERROR: invalid link"
+# define NO_START_MSG	"ERROR: no start room"
+# define NO_END_MSG		"ERROR: no end room"
+# define CMD_MSG		"ERROR: not valid command"
 # define START_MSG		"ERROR: next line after ##start must be a valid room"
 # define STOP_MSG		"ERROR: next line after ##stop must be a valid room"
 
