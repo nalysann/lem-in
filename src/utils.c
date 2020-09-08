@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 18:03:36 by nalysann          #+#    #+#             */
-/*   Updated: 2020/08/31 18:03:38 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/08 14:23:43 by hbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 #include "ft_string.h"
 #include "ft_vector.h"
+#include "ft_error.h"
 
 #include <stddef.h>
 
@@ -42,6 +43,8 @@ int		get_room_index_by_type(t_vector *rooms, t_room_type type, char half)
 		}
 		i += 2;
 	}
+	if (i >= (int)rooms->size)
+		return (-1);
 	return (half == 'i' ? i : i + 1);
 }
 
@@ -60,5 +63,7 @@ int		get_room_index_by_name(t_vector *rooms, char *name, char half)
 		}
 		i += 2;
 	}
+	if (i >= (int)rooms->size)
+		return (-1);
 	return (half == 'i' ? i : i + 1);
 }
