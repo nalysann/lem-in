@@ -83,7 +83,7 @@ static int		is_valid_room(t_vector *rooms, char *line, int idx, t_room_type type
 		return (0);
 	room_init(room_in, line, 2 * idx, type);
 	room_init(room_out, line, 2 * idx + 1, type);
-	if (get_room_index_by_name(rooms, room_in->name, 'o') != -1)
+	if (get_room_index_by_name(rooms, room_in->name, 'o') != NO_ROOM)
 		ft_throw("Room error", 1);
 	if (ft_strchr(room_in->name, '-'))
 		ft_throw("ERROR: Rooms with '-' not valid", 1);

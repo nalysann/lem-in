@@ -21,6 +21,8 @@
 
 #include <limits.h>
 
+#include "ft_stdio.h"
+
 static void		set_initial_links(t_dinic *info, t_vector *rooms)
 {
 	size_t	i;
@@ -75,7 +77,7 @@ static int	dfs(t_dinic *info, t_vector *rooms, int v, int flow)
 	while (info->last[v] != NULL)
 	{
 		e = (t_edge *)info->edges.data[(size_t)info->last[v]->data];
-		e_rev = (t_edge *)info->edges.data[(size_t)info->last[v]->data ^ 1U];
+		e_rev = (t_edge *)info->edges.data[(size_t)info->last[v]->data ^ 1UL];
 		if (info->d[e->to] == info->d[v] + 1)
 		{
 			pushed = dfs(info, rooms, e->to, ft_min(flow, e->cap - e->flow));
@@ -91,12 +93,14 @@ static int	dfs(t_dinic *info, t_vector *rooms, int v, int flow)
 	return (0);
 }
 
-void	dinic(t_dinic *info, t_vector *rooms, int number_of_ants, t_list *paths)
+t_list	*dinic(t_dinic *info, t_vector *rooms, int number_of_ants)
 {
+	t_list	*best_paths;
 	t_list	*cur_paths;
 	double	best_turns;
 	double	cur_turns;
 
+	best_paths = NULL;
 	best_turns = 0.0;
 	while (1)
 	{
@@ -107,11 +111,12 @@ void	dinic(t_dinic *info, t_vector *rooms, int number_of_ants, t_list *paths)
 			;
 		cur_paths = get_paths(rooms, info);
 		cur_turns = count_turns(cur_paths, number_of_ants);
-		if (paths == NULL || cur_turns < best_turns)
+		if (best_paths == NULL || cur_turns < best_turns)
 		{
-			paths = cur_paths;
+			best_paths = cur_paths;
 			best_turns = cur_turns;
 //			TODO: free old paths
 		}
 	}
+	return (best_paths);
 }

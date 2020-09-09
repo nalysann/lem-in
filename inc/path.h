@@ -20,12 +20,6 @@
 
 # include <stddef.h>
 
-typedef struct	s_path
-{
-	t_list	rooms;
-	size_t	ants;
-}				t_path;
-
 t_list			*get_paths(t_vector *rooms, t_dinic *info);
 double			count_turns(t_list *paths, int number_of_ants);
 
