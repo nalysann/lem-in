@@ -111,6 +111,7 @@ t_list	*dinic(t_dinic *info, t_vector *rooms, int number_of_ants)
 			;
 		cur_paths = get_paths(rooms, info);
 		cur_turns = count_turns(cur_paths, number_of_ants);
+		ft_printf("cur_turns %f\n", cur_turns);
 		if (best_paths == NULL || cur_turns < best_turns)
 		{
 			best_paths = cur_paths;

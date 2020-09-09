@@ -76,12 +76,12 @@ static void		handle_link(t_vector *rooms, char *line, t_dinic *info)
 		ft_throw(LINK_MSG, E_INPUT);
 	from = get_room_index_by_name(rooms, words[0], 'o');
 	to = get_room_index_by_name(rooms, words[1], 'i');
-	if (from == to + 1)
-		ft_throw(LINK_MSG, 1);
+//	if (from == to + 1)
+//		ft_throw(LINK_MSG, 1);
 	if (from == NO_ROOM || to == NO_ROOM)
 		ft_throw(LINK_MSG, E_INPUT);
 	add_edge(info, rooms, from, to);
-//	TODO: check loops, repeating links ???
+    add_edge(info, rooms, to + 1, from - 1);
 //	TODO: free split ???
 }
 
@@ -95,6 +95,7 @@ static void		add_split_links(t_vector *rooms, t_dinic *info)
 	while (to < (int)rooms->size)
 	{
 		add_edge(info, rooms, from, to);
+        add_edge(info, rooms, to, from);
 		from += 2;
 		to += 2;
 	}
@@ -104,8 +105,6 @@ void	parse_links(t_list *input, t_vector *rooms, char *line, t_dinic *info)
 {
 	while (line != NULL)
 	{
-		if (line[0] == '#' && line[1] == '#')
-			ft_throw(CMD_MSG, 1);
 		if (line[0] != '#')
 			handle_link(rooms, line, info);
 		get_next_line(STDIN_FILENO, &line);

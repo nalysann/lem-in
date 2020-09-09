@@ -108,10 +108,7 @@ static void		parse_command(char *line, t_room_type *type, t_dinic *info)
 		info->t = 0;
 		*type = R_SINK;
 	}
-	else
-	{
-		ft_throw(CMD_MSG, 1);
-	}
+
 	//	TODO: check previous type value
 }
 

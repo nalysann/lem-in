@@ -50,13 +50,15 @@ int				main(void)
 	print_input(&input);
 	paths = dinic(&info, &rooms, number_of_ants);
 	ft_printf("\n");
-	t_node	*nnn = (t_node *)paths->front;
-	while (nnn != NULL)
-	{
-		t_list *path = (t_list *)nnn->data;
-		ft_printf("%lu ", path->size);
-		nnn = nnn->next;
-	}
-	ft_printf("\n");
-//	print_answer(map, paths, ants + 1, flow);
+	if (paths != NULL)
+    {
+	    t_node	*nnn = (t_node *)paths->front;
+        while (nnn != NULL)
+        {
+            t_list *path = (t_list *)nnn->data;
+            ft_printf("%lu ", path->size);
+            nnn = nnn->next;
+        }
+        ft_printf("\n");
+    }
 }

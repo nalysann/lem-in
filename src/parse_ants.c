@@ -13,6 +13,7 @@
 #include "utils.h"
 
 #include "ft_error.h"
+#include "ft_string.h"
 #include "ft_list.h"
 #include "ft_stdio.h"
 #include "ft_stdlib.h"
@@ -28,8 +29,13 @@ void	parse_ants(t_list *input, int *number_of_ants)
 
 	if (get_next_line(STDIN_FILENO, &line) <= 0)
 		ft_throw(ANT_MSG, E_INPUT);
-	while (line[0] == '#' && line[1] != '#')
-		get_next_line(STDIN_FILENO, &line);
+
+    while (line[0] == '#')
+    {
+        if (ft_strequ(line, "##start") || ft_strequ(line, "##end"))
+            ft_throw(ANT_MSG, E_INPUT);
+        get_next_line(STDIN_FILENO, &line);
+    }
 	list_push_back(input, line);
 	number = ft_strtoll(line, &endptr, 10);
 	if (line[0] == '\0' || endptr[0] != '\0' ||
