@@ -10,16 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "room.h"
 #include "parse.h"
+#include "path.h"
 #include "solve.h"
+#include "utils.h"
 
+#include "ft_error.h"
 #include "ft_list.h"
 #include "ft_stdio.h"
 
 #include <stddef.h>
-
-#include "ft_stdio.h"
 
 static void		print_input(t_list *input)
 {
@@ -49,16 +49,9 @@ int				main(void)
 	parse(&input, &number_of_ants, &rooms, &info);
 	print_input(&input);
 	paths = dinic(&info, &rooms, number_of_ants);
+	if (paths == NULL)
+		ft_throw(PATH_MSG, E_PATH);
 	ft_printf("\n");
-	if (paths != NULL)
-    {
-	    t_node	*nnn = (t_node *)paths->front;
-        while (nnn != NULL)
-        {
-            t_list *path = (t_list *)nnn->data;
-            ft_printf("%lu ", path->size);
-            nnn = nnn->next;
-        }
-        ft_printf("\n");
-    }
+	print_paths(paths, &rooms, number_of_ants);
+
 }

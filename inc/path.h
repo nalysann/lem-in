@@ -20,7 +20,16 @@
 
 # include <stddef.h>
 
+typedef struct	s_pp
+{
+	int		*ants_on_path;
+	t_node	**ant_pos;
+	int		*ant_wait;
+}				t_pp;
+
 t_list			*get_paths(t_vector *rooms, t_dinic *info);
 double			count_turns(t_list *paths, int number_of_ants);
+
+void			print_paths(t_list *paths, t_vector *rooms, int number_of_ants);
 
 #endif

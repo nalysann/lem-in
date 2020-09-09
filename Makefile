@@ -20,6 +20,7 @@ SRC = lem_in.c \
       parse_links.c \
       parse_rooms.c \
       paths_get.c \
+      paths_print.c \
       solve.c \
       utils.c
 

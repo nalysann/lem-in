@@ -28,13 +28,15 @@
 # define LINK_MSG		"ERROR: invalid link"
 # define NO_START_MSG	"ERROR: no start room"
 # define NO_END_MSG		"ERROR: no end room"
-# define CMD_MSG		"ERROR: not valid command"
+# define CMD_MSG		"ERROR: not a valid command"
 # define START_MSG		"ERROR: next line after ##start must be a valid room"
 # define STOP_MSG		"ERROR: next line after ##stop must be a valid room"
+# define PATH_MSG		"ERROR: no paths from entrance room to exit room"
 
 # define E_NONE			0
 # define E_ALLOC		1
 # define E_INPUT		2
+# define E_PATH			3
 
 int		count_words(char **words);
 int		get_room_index_by_type(t_vector *rooms, t_room_type type, char half);

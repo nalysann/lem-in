@@ -108,15 +108,15 @@ t_list	*dinic(t_dinic *info, t_vector *rooms, int number_of_ants)
 			break ;
 		set_initial_links(info, rooms);
 		while (dfs(info, rooms, info->s, INT_MAX))
-			;
-		cur_paths = get_paths(rooms, info);
-		cur_turns = count_turns(cur_paths, number_of_ants);
-		ft_printf("cur_turns %f\n", cur_turns);
-		if (best_paths == NULL || cur_turns < best_turns)
 		{
-			best_paths = cur_paths;
-			best_turns = cur_turns;
+			cur_paths = get_paths(rooms, info);
+			cur_turns = count_turns(cur_paths, number_of_ants);
+			if (best_paths == NULL || cur_turns < best_turns)
+			{
+				best_paths = cur_paths;
+				best_turns = cur_turns;
 //			TODO: free old paths
+			}
 		}
 	}
 	return (best_paths);
