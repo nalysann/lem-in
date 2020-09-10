@@ -14,7 +14,8 @@ LEM_IN = lem-in
 
 SRC_DIR = src
 
-SRC = lem_in.c \
+SRC = free.c \
+      lem_in.c \
       parse.c \
       parse_ants.c \
       parse_links.c \

@@ -22,12 +22,14 @@ include_directories(libft/inc)
 add_subdirectory(libft)
 
 add_executable(lem-in
+        inc/free.h
         inc/lem_in.h
         inc/parse.h
         inc/path.h
         inc/room.h
         inc/solve.h
         inc/utils.h
+        src/free.c
         src/lem_in.c
         src/parse.c
         src/parse_ants.c
@@ -36,7 +38,6 @@ add_executable(lem-in
         src/paths_get.c
         src/paths_print.c
         src/solve.c
-        src/utils.c
-)
+        src/utils.c)
 
 target_link_libraries(lem-in ft)

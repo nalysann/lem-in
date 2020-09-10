@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 13:08:28 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/08 17:49:27 by hbarrett         ###   ########.fr       */
+/*   Updated: 2020/09/10 18:50:33 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static int		is_room_line(char *line)
 	words = ft_strsplit(line, ' ');
 	if (count_words(words) != 3)
 	{
-//		free_split();
 		return (0);
 	}
 	if (words[0][0] == 'L')
@@ -47,7 +46,6 @@ static int		is_room_line(char *line)
 	if (words[2][0] == '\0' || endptr[0] != '\0' ||
 		!(INT_MIN <= number && number <= INT_MAX))
 		ft_throw(ROOM_COORD_MSG, E_INPUT);
-//	free_split();
 	return (1);
 }
 
@@ -120,10 +118,7 @@ char			*parse_rooms(t_list *input, t_vector *rooms, t_dinic *info)
 	while (get_next_line(STDIN_FILENO, &line) > 0)
 	{
 		if (line[0] == '#' && line[1] != '#')
-		{
-			list_push_back(input, line);
 			continue;
-		}
 		list_push_back(input, line);
 		if (line[0] == '#' && line[1] == '#')
 		{
