@@ -36,7 +36,8 @@ static void		info_init(t_dinic *info, t_vector *rooms)
 		ft_throw(ALLOC_MSG, E_ALLOC);
 }
 
-void			parse(t_list *input, int *number_of_ants, t_vector *rooms, t_dinic *info)
+void			parse(t_list *input, int *number_of_ants, t_vector *rooms,
+						t_dinic *info)
 {
 	char	*line;
 

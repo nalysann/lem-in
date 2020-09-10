@@ -13,9 +13,9 @@
 #ifndef UTILS_H
 # define UTILS_H
 
-#include "room.h"
+# include "room.h"
 
-#include "ft_vector.h"
+# include "ft_vector.h"
 
 # include <stddef.h>
 
@@ -25,13 +25,15 @@
 # define LINE_MSG		"ERROR: invalid line"
 # define ANT_MSG		"ERROR: invalid number of ants"
 # define ROOM_MSG		"ERROR: invalid room"
+# define ROOM_NAME_MSG	"ERROR: room name can't start with 'L'"
+# define ROOM_COORD_MSG	"ERROR: room coordinates aren't valid integers"
 # define LINK_MSG		"ERROR: invalid link"
 # define NO_START_MSG	"ERROR: no start room"
 # define NO_END_MSG		"ERROR: no end room"
+# define MULT_START_MSG	"ERROR: multiple start rooms"
+# define MULT_END_MSG	"ERROR: multiple end rooms"
 # define CMD_MSG		"ERROR: not a valid command"
-# define START_MSG		"ERROR: next line after ##start must be a valid room"
-# define STOP_MSG		"ERROR: next line after ##stop must be a valid room"
-# define PATH_MSG		"ERROR: no paths from entrance room to exit room"
+# define PATH_MSG		"ERROR: no paths from start room to end room"
 
 # define E_NONE			0
 # define E_ALLOC		1

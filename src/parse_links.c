@@ -41,9 +41,11 @@ static void		add_edge(t_dinic *info, t_vector *rooms, int from, int to)
 	e_rev->to = from;
 	e_rev->cap = 0;
 	e_rev->flow = 0;
-	list_push_back(&((t_room *)rooms->data[from])->links, (void *)info->edges.size);
+	list_push_back(&((t_room *)rooms->data[from])->links,
+				(void *)info->edges.size);
 	vector_push_back(&info->edges, e);
-	list_push_back(&((t_room *)rooms->data[to])->links, (void *)info->edges.size);
+	list_push_back(&((t_room *)rooms->data[to])->links,
+				(void *)info->edges.size);
 	vector_push_back(&info->edges, e_rev);
 }
 
@@ -81,7 +83,7 @@ static void		handle_link(t_vector *rooms, char *line, t_dinic *info)
 	if (from == NO_ROOM || to == NO_ROOM)
 		ft_throw(LINK_MSG, E_INPUT);
 	add_edge(info, rooms, from, to);
-    add_edge(info, rooms, to + 1, from - 1);
+	add_edge(info, rooms, to + 1, from - 1);
 //	TODO: free split ???
 }
 
@@ -95,13 +97,14 @@ static void		add_split_links(t_vector *rooms, t_dinic *info)
 	while (to < (int)rooms->size)
 	{
 		add_edge(info, rooms, from, to);
-        add_edge(info, rooms, to, from);
+		add_edge(info, rooms, to, from);
 		from += 2;
 		to += 2;
 	}
 }
 
-void	parse_links(t_list *input, t_vector *rooms, char *line, t_dinic *info)
+void			parse_links(t_list *input, t_vector *rooms, char *line,
+							t_dinic *info)
 {
 	while (line != NULL)
 	{

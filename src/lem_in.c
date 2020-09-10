@@ -21,6 +21,8 @@
 
 #include <stddef.h>
 
+#include <stdlib.h>
+
 static void		print_input(t_list *input)
 {
 	t_node	*node;
@@ -53,5 +55,5 @@ int				main(void)
 		ft_throw(PATH_MSG, E_PATH);
 	ft_printf("\n");
 	print_paths(paths, &rooms, number_of_ants);
-
+	exit(EXIT_SUCCESS);
 }

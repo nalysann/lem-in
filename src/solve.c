@@ -20,22 +20,39 @@
 #include "ft_vector.h"
 
 #include <limits.h>
+#include <stddef.h>
+#include <stdlib.h>
 
-#include "ft_stdio.h"
-
-static void		set_initial_links(t_dinic *info, t_vector *rooms)
+static void		free_paths(t_list *paths)
 {
-	size_t	i;
+	t_node	*node;
+	t_node	*path_node;
+	t_node	*tmp;
+	t_node	*path_tmp;
 
-	i = 0;
-	while (i < rooms->size)
+	if (paths == NULL)
 	{
-		info->last[i] = ((t_room *)rooms->data[i])->links.front;
-		++i;
+		return ;
 	}
+	node = paths->front;
+	while (node != NULL)
+	{
+		tmp = node;
+		path_node = ((t_list *)node->data)->front;
+		while (path_node != NULL)
+		{
+			path_tmp = path_node;
+			path_node = path_node->next;
+			free(path_tmp);
+		}
+		node = node->next;
+		free(tmp->data);
+		free(tmp);
+	}
+	free(paths);
 }
 
-static int		bfs(t_dinic *info, t_vector *rooms)
+static int		bfs_internal(t_dinic *info, t_vector *rooms)
 {
 	t_list	queue;
 	int		v;
@@ -44,7 +61,6 @@ static int		bfs(t_dinic *info, t_vector *rooms)
 
 	list_init(&queue);
 	list_push_back(&queue, (void *)(long long)info->s);
-	ft_memset(info->d, NOT_VISITED, info->n * sizeof(info->d[0]));
 	info->d[info->s] = 0;
 	while (queue.size > 0 && info->d[info->t] == NOT_VISITED)
 	{
@@ -61,10 +77,27 @@ static int		bfs(t_dinic *info, t_vector *rooms)
 			link = link->next;
 		}
 	}
+	list_free(&queue);
 	return (info->d[info->t] != NOT_VISITED);
 }
 
-static int	dfs(t_dinic *info, t_vector *rooms, int v, int flow)
+static int		bfs(t_dinic *info, t_vector *rooms)
+{
+	size_t	i;
+
+	ft_memset(info->d, NOT_VISITED, info->n * sizeof(info->d[0]));
+	if (!bfs_internal(info, rooms))
+		return (0);
+	i = 0;
+	while (i < rooms->size)
+	{
+		info->last[i] = ((t_room *)rooms->data[i])->links.front;
+		++i;
+	}
+	return (1);
+}
+
+static int		dfs(t_dinic *info, t_vector *rooms, int v, int flow)
 {
 	t_edge	*e;
 	t_edge	*e_rev;
@@ -93,7 +126,7 @@ static int	dfs(t_dinic *info, t_vector *rooms, int v, int flow)
 	return (0);
 }
 
-t_list	*dinic(t_dinic *info, t_vector *rooms, int number_of_ants)
+t_list			*dinic(t_dinic *info, t_vector *rooms, int number_of_ants)
 {
 	t_list	*best_paths;
 	t_list	*cur_paths;
@@ -106,16 +139,15 @@ t_list	*dinic(t_dinic *info, t_vector *rooms, int number_of_ants)
 	{
 		if (!bfs(info, rooms))
 			break ;
-		set_initial_links(info, rooms);
 		while (dfs(info, rooms, info->s, INT_MAX))
 		{
 			cur_paths = get_paths(rooms, info);
 			cur_turns = count_turns(cur_paths, number_of_ants);
 			if (best_paths == NULL || cur_turns < best_turns)
 			{
+				free_paths(best_paths);
 				best_paths = cur_paths;
 				best_turns = cur_turns;
-//			TODO: free old paths
 			}
 		}
 	}

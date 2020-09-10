@@ -27,7 +27,8 @@ static void		get_vertex(t_dinic *info, t_vector *rooms, int v,
 	t_node	*node;
 	t_edge	*edge;
 
-	if (cur_path->size == 0 || (size_t)cur_path->back->data != ((size_t)v ^ 1UL))
+	if (cur_path->size == 0 ||
+		(size_t)cur_path->back->data != ((size_t)v ^ 1UL))
 	{
 		list_push_back(cur_path, (void *)(long long)v);
 	}
@@ -76,7 +77,7 @@ t_list			*get_paths(t_vector *rooms, t_dinic *info)
 	return (paths);
 }
 
-double	count_turns(t_list *paths, int number_of_ants)
+double			count_turns(t_list *paths, int number_of_ants)
 {
 	t_node	*node;
 	t_list	*path;

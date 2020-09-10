@@ -12,7 +12,6 @@
 
 #include "path.h"
 #include "room.h"
-#include "solve.h"
 #include "utils.h"
 
 #include "ft_error.h"
@@ -22,6 +21,7 @@
 #include "ft_vector.h"
 
 #include <stddef.h>
+#include <stdlib.h>
 
 static void		sort_paths(t_list *paths)
 {
@@ -52,7 +52,6 @@ static void		place_ants_on_paths(t_list *paths, int number_of_ants, t_pp *pp)
 	int		cur_ant;
 	int		cur_path;
 	t_node	*node;
-	t_node	*next;
 
 	cur_ant = 0;
 	cur_path = 0;
@@ -61,14 +60,20 @@ static void		place_ants_on_paths(t_list *paths, int number_of_ants, t_pp *pp)
 	{
 		while (node != NULL && node->next != NULL)
 		{
-			next = node->next;
 			if (((t_list *)node->data)->size + pp->ants_on_path[cur_path] <=
-				((t_list *)next->data)->size + pp->ants_on_path[cur_path + 1])
+			((t_list *)node->next->data)->size + pp->ants_on_path[cur_path + 1])
 			{
-				break;
+				break ;
 			}
 			++cur_path;
 			node = node->next;
+		}
+		if (cur_path > 0 &&
+		((t_list *)node->data)->size + pp->ants_on_path[cur_path] >=
+		((t_list *)node->prev->data)->size + pp->ants_on_path[cur_path - 1])
+		{
+			cur_path = 0;
+			node = paths->front;
 		}
 		pp->ant_pos[cur_ant] = ((t_list *)node->data)->front;
 		pp->ant_wait[cur_ant] = pp->ants_on_path[cur_path]++;
@@ -123,4 +128,7 @@ void			print_paths(t_list *paths, t_vector *rooms,
 	sort_paths(paths);
 	place_ants_on_paths(paths, number_of_ants, &pp);
 	move_ants(rooms, number_of_ants, &pp);
+	free(pp.ants_on_path);
+	free(pp.ant_pos);
+	free(pp.ant_wait);
 }
