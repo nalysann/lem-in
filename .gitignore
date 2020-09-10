@@ -17,3 +17,7 @@ cmake-build-debug/
 
 # valgrind
 *.dSYM/
+
+# project maps and output
+map
+output
