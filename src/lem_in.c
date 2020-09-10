@@ -49,10 +49,11 @@ int				main(void)
 	vector_init(&rooms);
 	paths = NULL;
 	parse(&input, &number_of_ants, &rooms, &info);
-	print_input(&input);
 	paths = dinic(&info, &rooms, number_of_ants);
-	if (paths == NULL)
+	if (paths == NULL) {
 		ft_throw(PATH_MSG, E_PATH);
+	}
+	print_input(&input);
 	ft_printf("\n");
 	print_paths(paths, &rooms, number_of_ants);
 	exit(EXIT_SUCCESS);

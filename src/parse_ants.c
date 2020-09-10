@@ -38,6 +38,7 @@ void	parse_ants(t_list *input, int *number_of_ants)
 			ft_throw(ANT_MSG, E_INPUT);
 		}
 		get_next_line(STDIN_FILENO, &line);
+		list_push_back(input, line);
 	}
 	list_push_back(input, line);
 	number = ft_strtoll(line, &endptr, 10);

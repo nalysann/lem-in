@@ -111,7 +111,7 @@ void			parse_links(t_list *input, t_vector *rooms, char *line,
 		if (line[0] != '#')
 			handle_link(rooms, line, info);
 		get_next_line(STDIN_FILENO, &line);
-		if (line != NULL && !(line[0] == '#' && line[1] != '#'))
+		if (line != NULL)
 			list_push_back(input, line);
 	}
 	add_split_links(rooms, info);
