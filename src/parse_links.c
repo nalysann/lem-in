@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 13:08:34 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/08 18:41:01 by hbarrett         ###   ########.fr       */
+/*   Updated: 2020/09/10 18:50:33 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void			parse_links(t_list *input, t_vector *rooms, char *line,
 		if (line[0] != '#')
 			handle_link(rooms, line, info);
 		get_next_line(STDIN_FILENO, &line);
-		if (line != NULL)
+		if (line != NULL && !(line[0] == '#' && line[1] != '#'))
 			list_push_back(input, line);
 	}
 	add_split_links(rooms, info);

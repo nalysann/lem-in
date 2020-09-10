@@ -20,6 +20,8 @@
 
 # include <stddef.h>
 
+# define NO_ANTS	(-1)
+
 void	parse(t_list *input, int *number_of_ants, t_vector *rooms,
 				t_dinic *info);
 void	parse_ants(t_list *input, int *number_of_ants);

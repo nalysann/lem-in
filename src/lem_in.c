@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/30 19:36:30 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/10 18:50:33 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/10 19:40:31 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int				main(int argc, char *argv[])
 	paths = NULL;
 	parse(&input, &number_of_ants, &rooms, &info);
 	print_input(&input);
+	if (number_of_ants == 0)
+		return (free_all(&input, &rooms, &info, paths));
 	paths = dinic(&info, &rooms, number_of_ants);
 	if (paths == NULL)
 	{
