@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 13:08:34 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/10 18:50:33 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/10 19:59:47 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "ft_error.h"
 #include "ft_list.h"
 #include "ft_stdio.h"
+#include "ft_stdlib.h"
 #include "ft_string.h"
 #include "ft_vector.h"
 
@@ -84,7 +85,7 @@ static void		handle_link(t_vector *rooms, char *line, t_dinic *info)
 		ft_throw(LINK_MSG, E_INPUT);
 	add_edge(info, rooms, from, to);
 	add_edge(info, rooms, to + 1, from - 1);
-//	TODO: free split ???
+	free_split(words, 0);
 }
 
 static void		add_split_links(t_vector *rooms, t_dinic *info)
@@ -111,7 +112,7 @@ void			parse_links(t_list *input, t_vector *rooms, char *line,
 		if (line[0] != '#')
 			handle_link(rooms, line, info);
 		get_next_line(STDIN_FILENO, &line);
-		if (line != NULL && !(line[0] == '#' && line[1] != '#'))
+		if (line != NULL)
 			list_push_back(input, line);
 	}
 	add_split_links(rooms, info);

@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/10 17:48:38 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/10 18:36:58 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/10 20:26:00 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include "ft_list.h"
 #include "ft_vector.h"
 
-#include <stddef.h>
 #include <stdlib.h>
 
 static void		free_room(void *data)
@@ -28,38 +27,17 @@ static void		free_room(void *data)
 	free(room->name);
 }
 
-void			free_paths(t_list *paths)
+void			free_path(void *data)
 {
-	t_node	*node;
-	t_node	*path_node;
-	t_node	*tmp;
-	t_node	*path_tmp;
+	t_list	*path;
 
-	if (paths == NULL)
-	{
-		return ;
-	}
-	node = paths->front;
-	while (node != NULL)
-	{
-		tmp = node;
-		path_node = ((t_list *)node->data)->front;
-		while (path_node != NULL)
-		{
-			path_tmp = path_node;
-			path_node = path_node->next;
-			free(path_tmp);
-		}
-		node = node->next;
-		free(tmp->data);
-		free(tmp);
-	}
-	free(paths);
+	path = (t_list *)data;
+	list_free(path);
 }
 
 static void		free_dinic(t_dinic *info)
 {
-	vector_free(&info->edges);
+	vector_free_deep(&info->edges, free);
 	free(info->d);
 	free(info->last);
 }
@@ -67,9 +45,10 @@ static void		free_dinic(t_dinic *info)
 int				free_all(t_list *input, t_vector *rooms, t_dinic *info,
 							t_list *paths)
 {
-	list_free(input);
+	list_free_deep(input, free);
 	vector_free_deep(rooms, free_room);
 	free_dinic(info);
-	free_paths(paths);
+	list_free_deep(paths, free_path);
+	free(paths);
 	return (0);
 }

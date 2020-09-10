@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 13:08:28 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/10 18:50:33 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/10 20:19:05 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static int		is_room_line(char *line)
 	words = ft_strsplit(line, ' ');
 	if (count_words(words) != 3)
 	{
+		free_split(words, 0);
 		return (0);
 	}
 	if (words[0][0] == 'L')
@@ -46,6 +47,7 @@ static int		is_room_line(char *line)
 	if (words[2][0] == '\0' || endptr[0] != '\0' ||
 		!(INT_MIN <= number && number <= INT_MAX))
 		ft_throw(ROOM_COORD_MSG, E_INPUT);
+	free_split(words, 0);
 	return (1);
 }
 
@@ -61,9 +63,7 @@ static void		room_init(t_room *room, char *line, size_t idx,
 	room->index = idx;
 	room->type = type;
 	list_init(&room->links);
-	free(words[1]);
-	free(words[2]);
-	free(words);
+	free_split(words, 1);
 }
 
 static int		is_valid_room(t_vector *rooms, char *line, int idx,
@@ -72,12 +72,14 @@ static int		is_valid_room(t_vector *rooms, char *line, int idx,
 	t_room	*room_in;
 	t_room	*room_out;
 
+	if (!is_room_line(line))
+	{
+		return (0);
+	}
 	room_in = (t_room *)malloc(sizeof(t_room));
 	room_out = (t_room *)malloc(sizeof(t_room));
 	if (room_in == NULL || room_out == NULL)
 		ft_throw(ALLOC_MSG, E_ALLOC);
-	if (!is_room_line(line))
-		return (0);
 	room_init(room_in, line, 2 * idx, type);
 	room_init(room_out, line, 2 * idx + 1, type);
 	if (get_room_index_by_name(rooms, room_in->name, 'o') != NO_ROOM)
@@ -94,14 +96,18 @@ static void		parse_command(char *line, t_room_type *type, t_dinic *info)
 	if (ft_strequ(line, C_START))
 	{
 		if (info->s != NO_ROOM)
+		{
 			ft_throw(MULT_START_MSG, E_INPUT);
+		}
 		info->s = 0;
 		*type = R_SOURCE;
 	}
 	else if (ft_strequ(line, C_END))
 	{
 		if (info->t != NO_ROOM)
+		{
 			ft_throw(MULT_END_MSG, E_INPUT);
+		}
 		info->t = 0;
 		*type = R_SINK;
 	}
@@ -117,9 +123,9 @@ char			*parse_rooms(t_list *input, t_vector *rooms, t_dinic *info)
 	type = R_DEFAULT;
 	while (get_next_line(STDIN_FILENO, &line) > 0)
 	{
-		if (line[0] == '#' && line[1] != '#')
-			continue;
 		list_push_back(input, line);
+		if (line[0] == '#' && line[1] != '#')
+			continue ;
 		if (line[0] == '#' && line[1] == '#')
 		{
 			parse_command(line, &type, info);

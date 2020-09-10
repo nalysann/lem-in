@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 13:47:21 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/10 18:50:33 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/10 20:26:43 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ t_list			*dinic(t_dinic *info, t_vector *rooms, int number_of_ants)
 			cur_turns = count_turns(cur_paths, number_of_ants);
 			if (best_paths == NULL || cur_turns < best_turns)
 			{
-				free_paths(best_paths);
+				list_free_deep(best_paths, free_path);
 				best_paths = cur_paths;
 				best_turns = cur_turns;
 			}

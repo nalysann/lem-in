@@ -18,7 +18,7 @@
 # include "ft_list.h"
 # include "ft_vector.h"
 
-void	free_paths(t_list *paths);
+void	free_path(void *data);
 int		free_all(t_list *input, t_vector *rooms, t_dinic *info, t_list *paths);
 
 #endif
