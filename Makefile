@@ -6,7 +6,7 @@
 #    By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/30 12:39:04 by nalysann          #+#    #+#              #
-#    Updated: 2020/09/11 13:16:45 by nalysann         ###   ########.fr        #
+#    Updated: 2020/09/11 19:34:31 by nalysann         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,6 +76,7 @@ all:
 	@$(MAKE) -C $(LIB_DIR)
 	@echo -e $(CYAN)\>\>\> Making $(LEM_IN) \<\<\<$(RESET)
 	@$(MAKE) $(LEM_IN)
+
 
 $(LEM_IN): $(OBJ) $(LIB_DIR)/$(LIB)
 	@echo -en $(GREEN)

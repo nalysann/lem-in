@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/08 14:04:54 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/11 17:06:42 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/11 17:11:24 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void		move_ants_internal(t_vector *rooms, t_pp *pp, int cur_ant,
 		*printed = 1;
 		room_index =
 				(int)(long long)((t_node *)pp->ant_pos[cur_ant])->data;
-		ft_printf("L%d-%s ", cur_ant + 1,
+		ft_printf("L%d-%s", cur_ant + 1,
 					((t_room *)rooms->data[room_index])->name);
 		pp->ant_pos[cur_ant] = pp->ant_pos[cur_ant]->next;
 	}

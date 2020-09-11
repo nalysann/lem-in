@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 13:08:28 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/11 15:09:45 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/11 17:33:02 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,7 @@ static int		is_valid_room(t_vector *rooms, char *line, int idx,
 	t_room	*room_out;
 
 	if (!is_room_line(line))
-	{
 		return (0);
-	}
 	room_in = (t_room *)malloc(sizeof(t_room));
 	room_out = (t_room *)malloc(sizeof(t_room));
 	if (room_in == NULL || room_out == NULL)
@@ -81,10 +79,15 @@ static int		is_valid_room(t_vector *rooms, char *line, int idx,
 	room_init(room_in, line, 2 * idx, type);
 	room_init(room_out, line, 2 * idx + 1, type);
 	if (get_room_index_by_name(rooms, room_in->name, 'i') != NO_ROOM)
-		ft_throw(MULT_ROOMS_MSG, E_INPUT);
+		ft_throw(MULT_ROOMS_N_MSG, E_INPUT);
+	if (get_room_index_by_coordinates(rooms, room_in->x, room_in->y, 'i') !=
+																		NO_ROOM)
+		ft_throw(MULT_ROOMS_C_MSG, E_INPUT);
+	if (room_in->name[0] == 'L')
+		ft_throw(ROOM_ELL_MSG, E_INPUT);
 	if (!is_good_room_name(room_in->name))
 		ft_throw("ERROR: room name can only contain printable "
-				"characters, except ' ' (space) and '-' (dash)", E_INPUT);
+				"characters, except ' ' (space), '-' (dash)", E_INPUT);
 	vector_push_back(rooms, room_in);
 	vector_push_back(rooms, room_out);
 	return (1);

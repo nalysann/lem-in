@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 13:08:34 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/11 15:09:45 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/11 17:11:24 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,22 @@ static void		add_edge(t_dinic *info, t_vector *rooms, int from, int to)
 	list_push_back(&((t_room *)rooms->data[to])->links,
 				(void *)info->edges.size);
 	vector_push_back(&info->edges, e_rev);
+}
+
+static size_t	count_char(char *str, char c)
+{
+	size_t	cnt;
+
+	cnt = 0;
+	while (*str != '\0')
+	{
+		if (*str == c)
+		{
+			++cnt;
+		}
+		++str;
+	}
+	return (cnt);
 }
 
 static void		handle_link(t_vector *rooms, char *line, t_dinic *info)

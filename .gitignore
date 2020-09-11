@@ -19,5 +19,6 @@ cmake-build-debug/
 *.dSYM/
 
 # project maps and output
+maps/
 map
 output
