@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/08 14:04:54 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/11 15:57:37 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/11 17:06:42 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ static void		move_ants(t_vector *rooms, int number_of_ants, t_pp *pp)
 		}
 		if (!printed)
 		{
-			break;
+			break ;
 		}
 		ft_printf("\n");
 	}
