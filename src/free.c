@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/10 17:48:38 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/10 20:26:00 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/11 11:28:55 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void		free_room(void *data)
 	room = (t_room *)data;
 	list_free(&room->links);
 	free(room->name);
+	free(room);
 }
 
 void			free_path(void *data)
@@ -33,6 +34,7 @@ void			free_path(void *data)
 
 	path = (t_list *)data;
 	list_free(path);
+	free(path);
 }
 
 static void		free_dinic(t_dinic *info)

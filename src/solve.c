@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 13:47:21 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/10 20:26:43 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/11 11:40:45 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,26 @@ static int		dfs(t_dinic *info, t_vector *rooms, int v, int flow)
 	return (0);
 }
 
+static void		choose_best_paths(t_list **best_paths, t_list *cur_paths,
+									double *best_turns, double cur_turns)
+{
+	if (*best_paths == NULL || cur_turns < *best_turns)
+	{
+		if (*best_paths != NULL)
+		{
+			list_free_deep(*best_paths, free_path);
+			free(*best_paths);
+		}
+		*best_paths = cur_paths;
+		*best_turns = cur_turns;
+	}
+	else
+	{
+		list_free_deep(cur_paths, free_path);
+		free(cur_paths);
+	}
+}
+
 t_list			*dinic(t_dinic *info, t_vector *rooms, int number_of_ants)
 {
 	t_list	*best_paths;
@@ -115,12 +135,7 @@ t_list			*dinic(t_dinic *info, t_vector *rooms, int number_of_ants)
 		{
 			cur_paths = get_paths(rooms, info);
 			cur_turns = count_turns(cur_paths, number_of_ants);
-			if (best_paths == NULL || cur_turns < best_turns)
-			{
-				list_free_deep(best_paths, free_path);
-				best_paths = cur_paths;
-				best_turns = cur_turns;
-			}
+			choose_best_paths(&best_paths, cur_paths, &best_turns, cur_turns);
 		}
 	}
 	return (best_paths);
