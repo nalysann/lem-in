@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/08 14:04:54 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/08 14:04:57 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/11 15:57:37 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,15 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-static void		sort_paths(t_list *paths)
+static void		place_ants_on_paths_internal(t_list *paths, t_pp *pp,
+											int *cur_path, t_node **node)
 {
-	t_node	*node;
-	t_node	*check;
-	void	*tmp;
-
-	node = paths->front;
-	while (node != NULL)
+	if (*cur_path > 0 &&
+		((t_list *)(*node)->data)->size + pp->ants_on_path[*cur_path] >=
+		((t_list *)(*node)->prev->data)->size + pp->ants_on_path[*cur_path - 1])
 	{
-		check = node->next;
-		while (check != NULL)
-		{
-			if (((t_list *)node->data)->size > ((t_list *)check->data)->size)
-			{
-				tmp = node->data;
-				node->data = check->data;
-				check->data = tmp;
-			}
-			check = check->next;
-		}
-		node = node->next;
+		*cur_path = 0;
+		*node = paths->front;
 	}
 }
 
@@ -62,29 +50,42 @@ static void		place_ants_on_paths(t_list *paths, int number_of_ants, t_pp *pp)
 		{
 			if (((t_list *)node->data)->size + pp->ants_on_path[cur_path] <=
 			((t_list *)node->next->data)->size + pp->ants_on_path[cur_path + 1])
-			{
 				break ;
-			}
 			++cur_path;
 			node = node->next;
 		}
-		if (cur_path > 0 &&
-		((t_list *)node->data)->size + pp->ants_on_path[cur_path] >=
-		((t_list *)node->prev->data)->size + pp->ants_on_path[cur_path - 1])
-		{
-			cur_path = 0;
-			node = paths->front;
-		}
+		place_ants_on_paths_internal(paths, pp, &cur_path, &node);
 		pp->ant_pos[cur_ant] = ((t_list *)node->data)->front;
 		pp->ant_wait[cur_ant] = pp->ants_on_path[cur_path]++;
 		++cur_ant;
 	}
 }
 
+static void		move_ants_internal(t_vector *rooms, t_pp *pp, int cur_ant,
+									int *printed)
+{
+	int		room_index;
+
+	if (pp->ant_wait[cur_ant] != 0)
+		--pp->ant_wait[cur_ant];
+	else if (pp->ant_pos[cur_ant] != NULL)
+	{
+		if (*printed == 1)
+		{
+			ft_printf(" ");
+		}
+		*printed = 1;
+		room_index =
+				(int)(long long)((t_node *)pp->ant_pos[cur_ant])->data;
+		ft_printf("L%d-%s ", cur_ant + 1,
+					((t_room *)rooms->data[room_index])->name);
+		pp->ant_pos[cur_ant] = pp->ant_pos[cur_ant]->next;
+	}
+}
+
 static void		move_ants(t_vector *rooms, int number_of_ants, t_pp *pp)
 {
 	int		cur_ant;
-	int		room_index;
 	int		printed;
 
 	while (1)
@@ -93,24 +94,13 @@ static void		move_ants(t_vector *rooms, int number_of_ants, t_pp *pp)
 		cur_ant = 0;
 		while (cur_ant < number_of_ants)
 		{
-			if (pp->ant_wait[cur_ant] != 0)
-			{
-				--pp->ant_wait[cur_ant];
-			}
-			else
-			{
-				if (pp->ant_pos[cur_ant] != NULL)
-				{
-					printed = 1;
-					room_index = (int)(long long)((t_node *)pp->ant_pos[cur_ant])->data;
-					ft_printf("L%d-%s ", cur_ant + 1, ((t_room *)rooms->data[room_index])->name);
-					pp->ant_pos[cur_ant] = pp->ant_pos[cur_ant]->next;
-				}
-			}
+			move_ants_internal(rooms, pp, cur_ant, &printed);
 			++cur_ant;
 		}
 		if (!printed)
-			break ;
+		{
+			break;
+		}
 		ft_printf("\n");
 	}
 }
@@ -124,7 +114,9 @@ void			print_paths(t_list *paths, t_vector *rooms,
 	pp.ant_pos = (t_node **)ft_memalloc(number_of_ants * sizeof(t_node *));
 	pp.ant_wait = (int *)ft_memalloc(number_of_ants * sizeof(int));
 	if (pp.ants_on_path == NULL || pp.ant_pos == NULL || pp.ant_wait == NULL)
+	{
 		ft_throw(ALLOC_MSG, E_ALLOC);
+	}
 	sort_paths(paths);
 	place_ants_on_paths(paths, number_of_ants, &pp);
 	move_ants(rooms, number_of_ants, &pp);

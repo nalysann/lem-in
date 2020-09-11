@@ -23,7 +23,6 @@ add_subdirectory(libft)
 
 add_executable(lem-in
         inc/free.h
-        inc/lem_in.h
         inc/parse.h
         inc/path.h
         inc/room.h
@@ -37,6 +36,7 @@ add_executable(lem-in
         src/parse_rooms.c
         src/paths_get.c
         src/paths_print.c
+        src/paths_sort.c
         src/solve.c
         src/utils.c)
 

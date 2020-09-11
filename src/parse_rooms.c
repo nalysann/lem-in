@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 13:08:28 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/10 20:19:05 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/11 15:09:45 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ static int		is_room_line(char *line)
 		free_split(words, 0);
 		return (0);
 	}
-	if (words[0][0] == 'L')
-		ft_throw(ROOM_NAME_MSG, E_INPUT);
 	number = ft_strtoll(words[1], &endptr, 10);
 	if (words[1][0] == '\0' || endptr[0] != '\0' ||
 		!(INT_MIN <= number && number <= INT_MAX))
@@ -82,10 +80,11 @@ static int		is_valid_room(t_vector *rooms, char *line, int idx,
 		ft_throw(ALLOC_MSG, E_ALLOC);
 	room_init(room_in, line, 2 * idx, type);
 	room_init(room_out, line, 2 * idx + 1, type);
-	if (get_room_index_by_name(rooms, room_in->name, 'o') != NO_ROOM)
-		ft_throw("Room error", E_INPUT);
-	if (ft_strchr(room_in->name, '-'))
-		ft_throw("ERROR: Rooms with '-' not valid", E_INPUT);
+	if (get_room_index_by_name(rooms, room_in->name, 'i') != NO_ROOM)
+		ft_throw(MULT_ROOMS_MSG, E_INPUT);
+	if (!is_good_room_name(room_in->name))
+		ft_throw("ERROR: room name can only contain printable "
+				"characters, except ' ' (space) and '-' (dash)", E_INPUT);
 	vector_push_back(rooms, room_in);
 	vector_push_back(rooms, room_out);
 	return (1);
@@ -95,20 +94,22 @@ static void		parse_command(char *line, t_room_type *type, t_dinic *info)
 {
 	if (ft_strequ(line, C_START))
 	{
+		if (*type == R_SOURCE || *type == R_SINK)
+			ft_throw("ERROR: next non-comment line after "
+					"##start or ##end should specify a room", E_INPUT);
 		if (info->s != NO_ROOM)
-		{
 			ft_throw(MULT_START_MSG, E_INPUT);
-		}
-		info->s = 0;
+		info->s = EXST_ROOM;
 		*type = R_SOURCE;
 	}
 	else if (ft_strequ(line, C_END))
 	{
+		if (*type == R_SOURCE || *type == R_SINK)
+			ft_throw("ERROR: next non-comment line after "
+					"##start or ##end should specify a room", E_INPUT);
 		if (info->t != NO_ROOM)
-		{
 			ft_throw(MULT_END_MSG, E_INPUT);
-		}
-		info->t = 0;
+		info->t = EXST_ROOM;
 		*type = R_SINK;
 	}
 }
@@ -123,6 +124,8 @@ char			*parse_rooms(t_list *input, t_vector *rooms, t_dinic *info)
 	type = R_DEFAULT;
 	while (get_next_line(STDIN_FILENO, &line) > 0)
 	{
+		if (line[0] == '\0')
+			ft_throw(EMPTY_LINE_MSG, E_INPUT);
 		list_push_back(input, line);
 		if (line[0] == '#' && line[1] != '#')
 			continue ;

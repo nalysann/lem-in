@@ -6,7 +6,7 @@
 #    By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/30 12:39:04 by nalysann          #+#    #+#              #
-#    Updated: 2020/09/10 18:50:33 by nalysann         ###   ########.fr        #
+#    Updated: 2020/09/11 13:16:45 by nalysann         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC = free.c \
       parse_rooms.c \
       paths_get.c \
       paths_print.c \
+      paths_sort.c \
       solve.c \
       utils.c
 
@@ -89,8 +90,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo -en $(RESET)
 
-include $(wildcard $(DEP_CHECKER))
-include $(wildcard $(DEP_PUSH_SWAP))
+include $(wildcard $(DEP))
 
 clean:
 	@echo -e $(CYAN)\>\>\> Cleaning $(LIB_DIR) \<\<\<$(RESET)

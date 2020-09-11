@@ -21,6 +21,7 @@
 # define C_END		"##end"
 
 # define NO_ROOM	(-1)
+# define EXST_ROOM	(-2)
 
 typedef enum	e_room_type
 {

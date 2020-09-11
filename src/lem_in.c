@@ -6,7 +6,7 @@
 /*   By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/30 19:36:30 by nalysann          #+#    #+#             */
-/*   Updated: 2020/09/10 20:09:30 by nalysann         ###   ########.fr       */
+/*   Updated: 2020/09/11 13:52:35 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,12 @@ int				main(int argc, char *argv[])
 	vector_init(&rooms);
 	paths = NULL;
 	parse(&input, &number_of_ants, &rooms, &info);
-	print_input(&input);
-	if (number_of_ants == 0)
-		return (free_all(&input, &rooms, &info, paths));
 	paths = dinic(&info, &rooms, number_of_ants);
 	if (paths == NULL)
 	{
 		ft_throw(NO_PATHS_MSG, E_NO_PATHS);
 	}
+	print_input(&input);
 	ft_printf("\n");
 	print_paths(paths, &rooms, number_of_ants);
 	free_all(&input, &rooms, &info, paths);
